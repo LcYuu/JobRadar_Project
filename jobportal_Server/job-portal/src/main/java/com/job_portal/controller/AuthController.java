@@ -47,7 +47,7 @@ import com.job_portal.response.ChangePassword;
 import com.job_portal.service.AccountDetailServiceImpl;
 import com.job_portal.utils.EmailUtil;
 import com.job_portal.utils.OtpUtil;
-import com.social.models.User;
+
 
 import jakarta.mail.MessagingException;
 
