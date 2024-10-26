@@ -5,6 +5,7 @@ import Home from './pages/Home/Home';
 import SignUpForm from './pages/SignUp/signup'
 import './global.css';
 import SignInForm from "./pages/SignIn/SignIn";
+import ForgotPassword from "./pages/ForgotPassword/ForgotPassword";
 const App = () => {
   const location = useLocation();
 
@@ -17,6 +18,7 @@ const App = () => {
       <Routes>
         <Route path="/auth/sign-up" element={<SignUpForm />} />
         <Route path="/auth/sign-in" element={<SignInForm />} />
+        <Route path="/auth/forgot-password" element={<ForgotPassword />} />
         <Route path="/" element={<Home />} />
       </Routes>
     </>

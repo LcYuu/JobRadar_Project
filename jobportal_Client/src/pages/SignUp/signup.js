@@ -43,7 +43,6 @@ export default function SignUpForm() {
 
   const employerFields = [
     { name: "companyName", placeholder: "Tên công ty", type: "text" },
-    { name: "contactPerson", placeholder: "Người liên hệ", type: "text" },
     { name: "businessEmail", placeholder: "Email doanh nghiệp", type: "email" },
     { name: "password", placeholder: "Mật khẩu", type: "password" },
   ];
