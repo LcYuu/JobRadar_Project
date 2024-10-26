@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFacebookF, faTwitter, faInstagram, faLinkedinIn } from '@fortawesome/free-brands-svg-icons'; 
 import logo from '../../../assets/images/common/logo.jpg';
@@ -6,6 +6,9 @@ import { Input } from '../../../ui/input';
 import { Button } from '../../../ui/button';
 
 export default function Footer() {
+  const [email, setEmail] = useState('');
+  const [message, setMessage] = useState('');
+
   const socialIcons = [
     { icon: faFacebookF, link: 'https://facebook.com' },
     { icon: faTwitter, link: 'https://twitter.com' },
@@ -13,23 +16,44 @@ export default function Footer() {
     { icon: faLinkedinIn, link: 'https://linkedin.com' }
   ];
 
+  const validateEmail = (email) => {
+    const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return regex.test(email);
+  };
+
+  const handleSubscribe = () => {
+    if (!email) {
+      setMessage('Vui lòng nhập email của bạn.');
+    } else if (!validateEmail(email)) {
+      setMessage('Email không hợp lệ.');
+    } else {
+      setMessage('Đăng ký nhận thông báo thành công!');
+      // Additional subscription logic goes here
+    }
+
+    // Clear message after 5 seconds and reset the form
+    setTimeout(() => {
+      setMessage('');
+      setEmail('');
+    }, 5000);
+  };
+
   return (
     <footer className="bg-gray-900 py-12">
       <div className="container mx-auto px-4">
         <div className="flex flex-col md:flex-row justify-between">
           <div className="mb-8 md:mb-0">
             <div className="flex items-center space-x-2 mb-4">
-              <img src={logo} alt="logo" className="w-8 h-8 bg-purple-600 rounded-full"></img>
+              <img src={logo} alt="logo" className="w-8 h-8 bg-purple-600 rounded-full" />
               <span className="text-xl font-bold text-white">JobRadar</span>
             </div>
-            <p className="text-slate-200 text-sm text">
+            <p className="text-slate-200 text-sm">
               Nền tảng tuyệt vời dành cho người tìm việc.
               <br />
               Tìm công việc mơ ước của bạn dễ dàng hơn.
             </p>
           </div>
 
-          {/* Job Alert Section */}
           <div className="mb-8 md:mb-0 flex flex-col items-center justify-center">
             <h4 className="font-semibold text-white mb-2">Đăng ký nhận thông báo việc làm</h4>
             <div className="flex space-x-2">
@@ -37,9 +61,14 @@ export default function Footer() {
                 type="email"
                 placeholder="Nhập email của bạn"
                 className="w-64 text-gray-900"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
               />
-              <Button className="bg-purple-600 text-white">Đăng ký</Button>
+              <Button className="bg-purple-600 text-white" onClick={handleSubscribe}>
+                Đăng ký
+              </Button>
             </div>
+            {message && <p className="text-sm mt-2 text-gray-200">{message}</p>}
           </div>
 
           <div className="flex flex-col md:flex-row space-y-8 md:space-y-0 md:space-x-12">

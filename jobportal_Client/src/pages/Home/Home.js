@@ -10,6 +10,7 @@ const Home = () => {
   return (
     <>
       <Slider />
+      <SearchEngine />
       <CategoryList />
       <TopListEmployers/>
       <JobList />
@@ -20,3 +21,8 @@ const Home = () => {
 };
 
 export default Home;
+
+
+
+
+
