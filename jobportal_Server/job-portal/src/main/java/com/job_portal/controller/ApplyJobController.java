@@ -58,8 +58,8 @@ public class ApplyJobController {
 
 		if (user.isEmpty()) {
 			return new ResponseEntity<>("Không tìm thấy user", HttpStatus.NOT_FOUND);
-		} else if (user.get().getUserType().getUserTypeId() == 1) { 
-			Optional<ApplyJob> apply = applyJobRepository.findByPostIdAndUserId(postId, user.get().getUserId());
+		} else if (user.get().getUserType().getUserTypeId() == 3) { 
+			Optional<ApplyJob> apply = applyJobRepository.findByPostIdAndUserId(postId, userId);
 
 			if (apply.isEmpty()) {
 				return new ResponseEntity<>("Application not found", HttpStatus.NOT_FOUND);

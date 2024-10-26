@@ -5,6 +5,9 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+
 import com.job_portal.DTO.DailyJobCount;
 import com.job_portal.DTO.JobPostDTO;
 import com.job_portal.models.JobPost;
@@ -23,6 +26,6 @@ public interface IJobPostService {
 	public boolean approveJob(UUID postId);
 	public JobPost searchJobByPostId(UUID postId) throws AllExceptions;
 	public List<DailyJobCount> getDailyJobPostCounts(LocalDateTime startDate, LocalDateTime endDate);
-	public List<JobPost> findByIsApproveTrue();
+	public Page<JobPost>findByIsApprove(Pageable pageable);
 	public void exportJobPostToCSV(String filePath) throws IOException;
 }

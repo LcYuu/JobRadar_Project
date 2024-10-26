@@ -122,7 +122,6 @@ public class EducationServiceImpl implements IEducationService {
 	@Override
 	public List<Education> searchEduByUserId(UUID userId) throws AllExceptions {
 		try {
-
 			List<Education> educations = educationRepository.findEduByUserId(userId);
 			if (educations.isEmpty()) {
 				throw new AllExceptions("Không có dữ liệu học tập");

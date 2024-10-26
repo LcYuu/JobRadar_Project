@@ -10,6 +10,8 @@ import java.util.Optional;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -72,8 +74,8 @@ public class JobPostController {
 	}
 
 	@GetMapping("/get-job-approve")
-	public ResponseEntity<List<JobPost>> getJobApprove() {
-		List<JobPost> res = jobPostService.findByIsApproveTrue();
+	public ResponseEntity<Page<JobPost>> getJobApprove(Pageable pageable) {
+		Page<JobPost> res = jobPostService.findByIsApprove(pageable);
 		return new ResponseEntity<>(res, HttpStatus.OK);
 	}
 
