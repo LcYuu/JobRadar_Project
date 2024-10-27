@@ -40,7 +40,7 @@ public class Education {
     @Column(name = "university_name", length = 100, nullable = false)
     private String universityName;
     
-    @Column(name = "start_date", nullable = false)
+    @Column(name = "start_date")
     private LocalDate startDate;
 
     @Column(name = "end_date")

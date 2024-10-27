@@ -25,7 +25,6 @@ public class CVServiceImpl implements ICVService {
 	public boolean createCV(CVDTO cvdto, UUID userId) {
 		Optional<Seeker> seeker = seekerRepository.findById(userId);
 
-		// Build the JobPost entity
 		CV cv = new CV();
 
 		cv.setSeeker(seeker.get());

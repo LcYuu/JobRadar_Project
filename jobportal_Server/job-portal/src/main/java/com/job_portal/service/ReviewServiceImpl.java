@@ -41,6 +41,7 @@ public class ReviewServiceImpl implements IReviewService {
 			Review savedReview = reviewRepository.save(review);
 			company.getReviews().add(savedReview);
 			companyRepository.save(company);
+			return true;
 		}
 		return false;
 	}

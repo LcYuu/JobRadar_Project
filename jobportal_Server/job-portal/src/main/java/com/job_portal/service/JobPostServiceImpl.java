@@ -10,6 +10,8 @@ import java.util.Optional;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.job_portal.DTO.DailyJobCount;
@@ -353,9 +355,10 @@ public class JobPostServiceImpl implements IJobPostService {
 	}
 
 	@Override
-	public List<JobPost> findByIsApproveTrue() {
-		List<JobPost> jobPost = jobPostRepository.findByIsApproveTrueAndExpireDateGreaterThanEqual(LocalDateTime.now());
+	public Page<JobPost> findByIsApprove(Pageable pageable) {
+		Page<JobPost> jobPost = jobPostRepository.findByIsApproveTrueAndExpireDateGreaterThanEqual(pageable, LocalDateTime.now());
 		return jobPost;
+
 	}
 
 	@Override

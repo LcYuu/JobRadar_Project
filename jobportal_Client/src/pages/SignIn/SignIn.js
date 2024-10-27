@@ -124,7 +124,7 @@ export default function SignInForm() {
               />
             </div>
             <div className="flex justify-between items-center">
-              <a href="#" className="text-indigo-600 hover:underline text-sm">
+              <a href="/auth/forgot-password" className="text-indigo-600 hover:underline text-sm">
                 Quên mật khẩu?
               </a>
             </div>
