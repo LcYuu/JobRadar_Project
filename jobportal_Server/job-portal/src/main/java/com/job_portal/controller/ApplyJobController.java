@@ -61,6 +61,7 @@ public class ApplyJobController {
 		} else if (user.get().getUserType().getUserTypeId() == 3) { 
 			Optional<ApplyJob> apply = applyJobRepository.findByPostIdAndUserId(postId, userId);
 
+
 			if (apply.isEmpty()) {
 				return new ResponseEntity<>("Application not found", HttpStatus.NOT_FOUND);
 			}

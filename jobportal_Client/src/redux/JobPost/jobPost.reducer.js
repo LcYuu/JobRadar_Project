@@ -1,6 +1,7 @@
 import { GET_ALL_JOB_FAILURE, GET_ALL_JOB_REQUEST, GET_ALL_JOB_SUCCESS } from "./jobPost.actionType"
 
 const initialState = {
+
     post: null,
     loading: false,
     error: null,
@@ -13,11 +14,13 @@ const initialState = {
 export const jobPostReducer = (state = initialState, action) => {
     switch (action.type) {
         case GET_ALL_JOB_REQUEST:
+
             return { 
                 ...state, 
                 loading: true, // Bắt đầu trạng thái tải
                 error: null // Đặt lỗi về null
             };
+
 
         case GET_ALL_JOB_SUCCESS:
             return { 
@@ -34,6 +37,7 @@ export const jobPostReducer = (state = initialState, action) => {
                 loading: false, // Kết thúc trạng thái tải
                 error: action.payload // Lưu trữ lỗi nếu có
             };
+
 
         // case GET_ALL_POST_SUCCESS:
         //     return {

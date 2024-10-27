@@ -31,6 +31,7 @@ export default function JobList() {
         <a href="#" className="text-primary">Xem tất cả</a>
       </div>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+
         {jobPost.length > 0 ? (
           jobPost.map((job) => (
             <JobCard

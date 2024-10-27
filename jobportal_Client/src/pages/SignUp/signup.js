@@ -1,4 +1,6 @@
 import { useState, useEffect } from 'react';
+import { useDispatch } from 'react-redux';
+import axios from 'axios';
 import { Button } from '../../ui/button';
 import { Input } from '../../ui/input';
 import { Card, CardContent, CardHeader, CardTitle } from "../../ui/card";
@@ -10,6 +12,7 @@ import SuccessIcon from '../../components/common/Icon/Sucess/Sucess';
 import FailureIcon from '../../components/common/Icon/Failed/Failed';
 import googleIcon from '../../assets/icons/google.png';
 import logo1 from '../../assets/images/common/logo1.jpg';
+import { signupAction } from '../../redux/Auth/auth.action';
 
 export default function SignUpForm() {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -22,7 +25,16 @@ export default function SignUpForm() {
   const [emailSubmitted, setEmailSubmitted] = useState(false); // Track if email was submitted
   const [isPaused, setIsPaused] = useState(false); // Track if timer is paused
   const navigate = useNavigate();
-
+  const dispatch = useDispatch();
+  const [userType, setUserType] = useState(2); 
+  const [formData, setFormData] = useState({
+    fullName: '',
+    email: '',
+    password: '',
+    companyName: '',
+    businessEmail: '',
+  });
+  const [errorMessage, setErrorMessage] = useState("");
   // Countdown effect
   useEffect(() => {
     if (isModalOpen && timeLeft > 0 && !isPaused) {
@@ -49,43 +61,90 @@ export default function SignUpForm() {
 
   const fields = activeTab === "job-seeker" ? jobSeekerFields : employerFields;
 
-  const handleRegister = (e) => {
+  const handleRegister = async (e) => {
     e.preventDefault();
-    setIsModalOpen(true);
-    setTimeLeft(120); // Reset timer on opening modal
-    setIsTimeUp(false); // Reset time up flag
+    const userData = {
+      userName: activeTab === "job-seeker" ? formData.fullName : formData.companyName,
+      email: activeTab === "job-seeker" ? formData.email : formData.businessEmail,
+      password: formData.password,
+      userType: {
+        userTypeId: userType
+      }
+    };
+    try {
+      const response = await dispatch(signupAction(userData));
+      console.log("Signup response:", response); // Add this line
+      if (response && response.success) {
+        setIsModalOpen(true);
+        setTimeLeft(120);
+        setIsTimeUp(false);
+        setErrorMessage("");
+      } else {
+        console.error("Signup error:", response.error); // Add this line
+        setErrorMessage(response.error || "Đăng ký thất bại. Vui lòng thử lại.");
+      }
+    } catch (error) {
+      console.error("Signup failed:", error);
+      setErrorMessage(error.message || "Đã xảy ra lỗi. Vui lòng thử lại sau.");
+    }
   };
 
   const handleGoogleSignUp = () => {
     console.log('Sign Up with Google');
   };
 
-  const handleConfirmation = (e) => {
+  const handleConfirmation = async (e) => {
     e.preventDefault();
-    setIsPaused(true); // Pause timer when submitting
-    setTimeout(() => {
-      if (confirmationCode === "123456") {
+    setIsPaused(true);
+    try {
+      const email = activeTab === "job-seeker" ? formData.email : formData.businessEmail;
+      const response = await axios.put(
+        `http://localhost:8080/auth/verify-account?email=${encodeURIComponent(email)}&otp=${encodeURIComponent(confirmationCode)}`
+      );
+      console.log("Verification API response:", response);
+      if (response.data === "Đăng ký tài khoản thành công") {
         setConfirmationStatus('success');
-        setIsPaused(true); // Stop the timer as the confirmation is successful
+        setIsPaused(true);
       } else {
         setConfirmationStatus('failure');
-        setIsPaused(false); // Resume the timer as the confirmation failed
+        setIsPaused(false);
+        setErrorMessage(response.data || "Xác thực thất bại. Vui lòng thử lại.");
       }
-    }, 1000); // Simulate API response time
+    } catch (error) {
+      console.error("Verification API error:", error);
+      setConfirmationStatus('failure');
+      setIsPaused(false);
+      if (error.response) {
+        setErrorMessage(error.response.data || "Xác thực thất bại. Vui lòng thử lại.");
+      } else if (error.request) {
+        setErrorMessage("Không thể kết nối đến máy chủ. Vui lòng thử lại sau.");
+      } else {
+        setErrorMessage("Đã xảy ra lỗi. Vui lòng thử lại.");
+      }
+    }
   };
 
-  const handleResendCode = (e) => {
+  const handleResendCode = async (e) => {
     e.preventDefault();
+    try {
+      await axios.put("http://localhost:8080/auth/regenerate-otp", null, {
+        params: { email: resendEmail }
     // Here you would trigger the backend logic to resend the confirmation code to the new email
-    console.log("Resend confirmation code to:", resendEmail);
-    setEmailSubmitted(true);
-    // Reset the countdown for the new code
-    setTimeLeft(120);
-    setIsTimeUp(false);
-    setEmailSubmitted(false);
-    setIsPaused(false); // Start the timer again
-  };
-
+  });
+  setEmailSubmitted(true);
+  setTimeLeft(120);
+  setIsTimeUp(false);
+  setEmailSubmitted(false);
+  setIsPaused(false);
+} catch (error) {
+  console.error("Failed to resend OTP:", error);
+  // Handle error (e.g., show error message to user)
+}
+};
+const handleTabChange = (tab) => {
+  setActiveTab(tab);
+  setUserType(tab === "job-seeker" ? 2 : 3);
+};
   const handleCloseModal = () => {
     setIsModalOpen(false);
     if (confirmationStatus === 'success') {
@@ -199,7 +258,7 @@ export default function SignUpForm() {
         <CardHeader className="border-b border-indigo-300">
           <div className="flex justify-between items-center mb-4">
             <a href="/"><img src={logo1} alt="JobRadar Logo" className="h-20 w-20" /></a>
-            <Tabs value={activeTab} onValueChange={setActiveTab} className="w-auto">
+            <Tabs value={activeTab} onValueChange={handleTabChange} className="w-auto">
               <TabsList className="bg-indigo-50 rounded-md">
                 <TabsTrigger value="job-seeker" className={`px-4 py-2 ${activeTab === 'job-seeker' ? 'bg-indigo-600 text-white' : 'bg-white text-indigo-600'}`}>
                   Người tìm việc
@@ -215,7 +274,7 @@ export default function SignUpForm() {
           </CardTitle>
         </CardHeader>
         <CardContent className="p-6">
-          <form className="space-y-4">
+          <form className="space-y-4" onSubmit={handleRegister}>
             <Button variant="outline" onClick={handleGoogleSignUp} className="w-full flex items-center justify-center gap-2 border border-gray-300 hover:bg-gray-50">
               <img src={googleIcon} className="w-5 h-5" alt="Google Icon" />
               <span>Sign Up with Google</span>
@@ -231,17 +290,24 @@ export default function SignUpForm() {
               </div>
             </div>
             <div className="space-y-2">
-              {fields.map((field) => (
-                <Input
-                  key={field.name}
-                  type={field.type}
-                  placeholder={field.placeholder}
-                  name={field.name}
-                  className="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500"
-                />
-              ))}
+            {fields.map((field) => (
+  <Input
+    key={field.name}
+    type={field.type}
+    placeholder={field.placeholder}
+    name={field.name}
+    value={formData[field.name]}
+    onChange={(e) => setFormData({ ...formData, [field.name]: e.target.value })}
+    className="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500"
+  />
+))}
             </div>
-            <Button onClick={handleRegister} className="w-full bg-indigo-600 hover:bg-indigo-700 text-white">
+            {errorMessage && (
+  <p className="text-red-500 text-sm text-center">
+    {typeof errorMessage === 'string' ? errorMessage : 'Đã xảy ra lỗi. Vui lòng thử lại.'}
+  </p>
+)}
+            <Button type="submit" className="w-full bg-indigo-600 hover:bg-indigo-700 text-white">
               Đăng kí
             </Button>
           </form>
