@@ -47,7 +47,6 @@ import com.job_portal.response.ChangePassword;
 import com.job_portal.service.AccountDetailServiceImpl;
 import com.job_portal.utils.EmailUtil;
 import com.job_portal.utils.OtpUtil;
-
 import jakarta.mail.MessagingException;
 
 @RestController

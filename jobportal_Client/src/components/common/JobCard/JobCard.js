@@ -21,6 +21,11 @@ const categoryStyles = {
     backgroundColor: "rgba(0, 0, 255, 0.1)", // màu xanh dương nhạt
     color: "blue",
   },
+  "IT phần cứng": {
+    backgroundColor: "rgba(0, 0, 255, 0.1)", // màu xanh dương nhạt
+    color: "blue",
+  },
+
 };
 function JobCardContent({ company, location, category }) {
   return (
