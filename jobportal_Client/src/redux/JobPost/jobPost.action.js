@@ -1,6 +1,6 @@
 import axios from "axios"
 import { api } from "../../configs/api"
-import { CREATE_COMMENT_FAILURE, CREATE_COMMENT_REQUEST, CREATE_COMMENT_SUCCESS, CREATE_POST_FAILURE, CREATE_POST_REQUEST, CREATE_POST_SUCCESS, GET_ALL_JOB_SUCCESS, GET_ALL_POST_FAILURE, GET_ALL_POST_REQUEST, GET_ALL_POST_SUCCESS, GET_USERS_POST_FAILURE, GET_USERS_POST_REQUEST, GET_USERS_POST_SUCCESS, LIKE_POST_FAILURE, LIKE_POST_REQUEST, LIKE_POST_SUCCESS } from "./jobPost.actionType"
+import { CREATE_COMMENT_FAILURE,GET_ALL_JOB_REQUEST, GET_ALL_JOB_FAILURE, CREATE_COMMENT_REQUEST, CREATE_COMMENT_SUCCESS, CREATE_POST_FAILURE, CREATE_POST_REQUEST, CREATE_POST_SUCCESS, GET_ALL_JOB_SUCCESS, GET_ALL_POST_FAILURE, GET_ALL_POST_REQUEST, GET_ALL_POST_SUCCESS, GET_USERS_POST_FAILURE, GET_USERS_POST_REQUEST, GET_USERS_POST_SUCCESS, LIKE_POST_FAILURE, LIKE_POST_REQUEST, LIKE_POST_SUCCESS } from "./jobPost.actionType"
 
 // export const createPostAction = (postData) => async(dispatch) =>{
 //     dispatch({type:CREATE_POST_REQUEST})
@@ -15,18 +15,23 @@ import { CREATE_COMMENT_FAILURE, CREATE_COMMENT_REQUEST, CREATE_COMMENT_SUCCESS,
 //     }
 // }
 
-export const getAllJobAction = () => async(dispatch) =>{
-    dispatch({type:GET_ALL_JOB_SUCCESS})
-    
+export const getAllJobAction = (currentPage, size) => async (dispatch) => {
+    dispatch({ type: GET_ALL_JOB_REQUEST });
     try {
-        const {data} = await axios.get(`http://localhost:8080/job-post/get-job-approve`)
-        dispatch({type: GET_ALL_JOB_SUCCESS , payload: data})
-        console.log("get all job post: ", data)
+        const response = await axios.get(`http://localhost:8080/job-post/get-job-approve?page=${currentPage}&size=${size}`); // Thay thế với URL thực tế
+        dispatch({
+            type: GET_ALL_JOB_SUCCESS,
+            payload: response.data // Trả về dữ liệu nhận được từ API
+        });
     } catch (error) {
-        console.log("error ", error)
-        dispatch({type: GET_ALL_JOB_SUCCESS, payload: error})
+        dispatch({
+            type: GET_ALL_JOB_FAILURE,
+            payload: error.message // Hoặc error.response.data
+        });
     }
-}
+};
+
+
 
 // export const getUsersPostAction = (user_id) => async(dispatch) =>{
 //     dispatch({type: GET_USERS_POST_REQUEST})

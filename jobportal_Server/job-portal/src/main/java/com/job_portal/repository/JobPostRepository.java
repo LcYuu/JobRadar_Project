@@ -4,6 +4,8 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -36,7 +38,8 @@ public interface JobPostRepository extends JpaRepository<JobPost, UUID> {
             "GROUP BY FUNCTION('date', jp.createDate)")
      List<Object[]> countNewJobsPerDay(@Param("startDate") LocalDateTime startDate, @Param("endDate") LocalDateTime endDate);
      
-     List<JobPost> findByIsApproveTrueAndExpireDateGreaterThanEqual(LocalDateTime currentDate);
+     Page<JobPost>findByIsApproveTrueAndExpireDateGreaterThanEqual(Pageable pageable, LocalDateTime currentTime);
+     List<JobPost>findByIsApproveTrueAndExpireDateGreaterThanEqual(LocalDateTime currentTime);
 
  }
     
