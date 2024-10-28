@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
+import com.job_portal.DTO.CountJobByIndustry;
 import com.job_portal.models.Industry;
 import com.job_portal.repository.IndustryRepository;
 import com.job_portal.service.IIndustryService;
@@ -25,6 +27,7 @@ public class IndustryController {
 	
 	@Autowired
 	private IIndustryService industryService;
+	
 	
 	@GetMapping("/industry/get-all")
 	public ResponseEntity<List<Industry>> getIndustry() {
@@ -70,6 +73,12 @@ public class IndustryController {
 	@GetMapping("/industry/search")
 	public List<Industry> searchIndustry(@RequestParam("query") String query) throws AllExceptions {
 		List<Industry> industries = industryService.searchIndustry(query);
+		return industries;
+	}
+	
+	@GetMapping("/industry/countJobByIndustry")
+	public List<CountJobByIndustry> countJobByIndustry() {
+		List<CountJobByIndustry> industries = industryRepository.countJobsByIndustry();
 		return industries;
 	}
 }

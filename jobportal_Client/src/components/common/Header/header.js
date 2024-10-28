@@ -5,7 +5,7 @@ import { Button } from '../../../ui/button';
 import logo from '../../../assets/images/common/logo.jpg';
 import UserAvatar from '../UserAvatar/UserAvatar';
 export default function Header() {
-  const isAuthenticated = useSelector(state => state.auth.token !== null && state.auth.user !== null);
+  const isAuthenticated = useSelector(store => store.auth.jwt != null);
   const navigate = useNavigate();
 
   const handleSignUpClick = () => {
