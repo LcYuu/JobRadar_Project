@@ -26,7 +26,7 @@ export default function Header() {
         <nav>
           <ul className="flex space-x-4">
             <li>
-              <Button variant="ghost" className="text-white hover:text-purple-200">Tìm việc</Button>
+             <a href="/find-jobs"><Button variant="ghost" className="text-white hover:text-purple-200">Tìm việc</Button></a> 
             </li>
             <li>
               <Button variant="ghost" className="text-white hover:text-purple-200">Công ty</Button>

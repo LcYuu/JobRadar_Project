@@ -22,8 +22,8 @@ export default function SignInForm() {
   const [loginStatus, setLoginStatus] = useState(null); // null, 'success', 'failure'
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  
   const handleSubmit = async (e) => {
+
     e.preventDefault();
 
     setError(''); // Xóa lỗi cũ
