@@ -13,6 +13,7 @@ import FailureIcon from '../../components/common/Icon/Failed/Failed';
 import googleIcon from '../../assets/icons/google.png';
 import logo1 from '../../assets/images/common/logo1.jpg';
 import { signupAction } from '../../redux/Auth/auth.action';
+import { isStrongPassword } from '../../utils/passwordValidator';
 
 export default function SignUpForm() {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -63,6 +64,10 @@ export default function SignUpForm() {
 
   const handleRegister = async (e) => {
     e.preventDefault();
+    if (!isStrongPassword(formData.password)) {
+      setErrorMessage('Mật khẩu phải có ít nhất 8 ký tự, bao gồm chữ hoa, chữ thường, số và ký tự đặc biệt.');
+      return;
+    }
     const userData = {
       userName: activeTab === "job-seeker" ? formData.fullName : formData.companyName,
       email: activeTab === "job-seeker" ? formData.email : formData.businessEmail,
@@ -274,7 +279,7 @@ const handleTabChange = (tab) => {
           </CardTitle>
         </CardHeader>
         <CardContent className="p-6">
-          <form className="space-y-4" onSubmit={handleRegister}>
+          <form className="space-y-4">
             <Button variant="outline" onClick={handleGoogleSignUp} className="w-full flex items-center justify-center gap-2 border border-gray-300 hover:bg-gray-50">
               <img src={googleIcon} className="w-5 h-5" alt="Google Icon" />
               <span>Sign Up with Google</span>
@@ -307,7 +312,7 @@ const handleTabChange = (tab) => {
     {typeof errorMessage === 'string' ? errorMessage : 'Đã xảy ra lỗi. Vui lòng thử lại.'}
   </p>
 )}
-            <Button type="submit" className="w-full bg-indigo-600 hover:bg-indigo-700 text-white">
+            <Button onClick={handleRegister} className="w-full bg-indigo-600 hover:bg-indigo-700 text-white">
               Đăng kí
             </Button>
           </form>
