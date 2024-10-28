@@ -38,8 +38,8 @@ public interface JobPostRepository extends JpaRepository<JobPost, UUID> {
             "GROUP BY FUNCTION('date', jp.createDate)")
      List<Object[]> countNewJobsPerDay(@Param("startDate") LocalDateTime startDate, @Param("endDate") LocalDateTime endDate);
      
+     List<JobPost> findByIsApproveTrueAndExpireDateGreaterThanEqual(LocalDateTime currentDate);
      Page<JobPost>findByIsApproveTrueAndExpireDateGreaterThanEqual(Pageable pageable, LocalDateTime currentTime);
-     List<JobPost>findByIsApproveTrueAndExpireDateGreaterThanEqual(LocalDateTime currentTime);
 
  }
     

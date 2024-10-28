@@ -25,33 +25,37 @@ export default function SignInForm() {
   const handleSubmit = async (e) => {
 
     e.preventDefault();
-    setError('');
+
+    setError(''); // Xóa lỗi cũ
     if (!isStrongPassword(password)) {
       setLoginStatus('failure');
       setIsModalOpen(true);
       setError('Mật khẩu phải có ít nhất 8 ký tự, bao gồm chữ hoa, chữ thường, số và ký tự đặc biệt.');
       return;
     }
+
     try {
-      const response = await dispatch(loginAction({ email, password }));
-      if (response.success) {
-        setLoginStatus('success');
-        setIsModalOpen(true);
-        setTimeout(() => {
-          setIsModalOpen(false);
-          navigate('/dashboard');
-        }, 2000);
-      } else {
+        const response = await dispatch(loginAction({ email, password }));
+        if (response.success) {
+            setLoginStatus('success');
+            setIsModalOpen(true);
+            setTimeout(() => {
+                setIsModalOpen(false);
+                navigate('/'); // Điều hướng đến trang Home
+            }, 2000);
+        } else {
+            setLoginStatus('failure');
+            setIsModalOpen(true);
+            // Hiển thị thông báo lỗi từ API
+            setError(response.error || 'Đăng nhập thất bại. Vui lòng thử lại.');
+        }
+    } catch (error) {
         setLoginStatus('failure');
         setIsModalOpen(true);
-        setError(response.error || 'Đăng nhập thất bại. Vui lòng thử lại.');
-      }
-    } catch (error) {
-      setLoginStatus('failure');
-      setIsModalOpen(true);
-      setError('Đã xảy ra lỗi. Vui lòng thử lại sau.');
+        setError('Đã xảy ra lỗi. Vui lòng thử lại sau.');
     }
-  };
+};
+
 
   const handleCloseModal = () => {
     setIsModalOpen(false);

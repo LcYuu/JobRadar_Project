@@ -102,7 +102,7 @@ public class ExperienceController {
 		}
 	}
 
-	@GetMapping("/user")
+	@GetMapping("/user/{userId}")
 	public ResponseEntity<Object> searchExpByUserId(@RequestHeader("Authorization") String jwt) {
 		String email = JwtProvider.getEmailFromJwtToken(jwt);
 		Optional<UserAccount> user = userAccountRepository.findByEmail(email);

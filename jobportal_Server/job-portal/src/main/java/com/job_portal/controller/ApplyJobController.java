@@ -57,10 +57,9 @@ public class ApplyJobController {
 		Optional<UserAccount> user = userAccountRepository.findByEmail(email);
 
 		if (user.isEmpty()) {
-			return new ResponseEntity<>("Không tìm thấy user", HttpStatus.NOT_FOUND);
-		} else if (user.get().getUserType().getUserTypeId() == 3) { 
-			Optional<ApplyJob> apply = applyJobRepository.findByPostIdAndUserId(postId, userId);
-
+			return new ResponseEntity<>("User not found", HttpStatus.NOT_FOUND);
+		} else if (user.get().getUserType().getUserTypeId() == 1) { 
+			Optional<ApplyJob> apply = applyJobRepository.findByPostIdAndUserId(postId, user.get().getUserId());
 
 			if (apply.isEmpty()) {
 				return new ResponseEntity<>("Application not found", HttpStatus.NOT_FOUND);
@@ -71,13 +70,13 @@ public class ApplyJobController {
 
 			try {
 				applyJobRepository.save(existingApply);
-				return new ResponseEntity<>("Chấp nhận đơn ứng tuyển thành công", HttpStatus.OK);
+				return new ResponseEntity<>("Approve successfully", HttpStatus.OK);
 			} catch (Exception e) {
 				// Log lỗi nếu cần thiết
-				return new ResponseEntity<>("Chấp nhận đơn ứng tuyển thất bại", HttpStatus.INTERNAL_SERVER_ERROR);
+				return new ResponseEntity<>("Approve failed", HttpStatus.INTERNAL_SERVER_ERROR);
 			}
 		} else {
-			return new ResponseEntity<>("Người dùng không có quyền để chấp nhận", HttpStatus.FORBIDDEN);
+			return new ResponseEntity<>("User does not have permission to approve", HttpStatus.FORBIDDEN);
 		}
 	}
 
@@ -90,9 +89,9 @@ public class ApplyJobController {
 		ApplyJob apply = convertToEntity(applyDTO, user.get().getUserId(), postId);
 		boolean isCreated = applyJobService.updateApplyJob(apply);
 		if (isCreated) {
-			return new ResponseEntity<>("Cập nhật thành công", HttpStatus.CREATED);
+			return new ResponseEntity<>("Update successfully.", HttpStatus.CREATED);
 		} else {
-			return new ResponseEntity<>("Cập nhật thất bại", HttpStatus.INTERNAL_SERVER_ERROR);
+			return new ResponseEntity<>("Failed to update.", HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
 
