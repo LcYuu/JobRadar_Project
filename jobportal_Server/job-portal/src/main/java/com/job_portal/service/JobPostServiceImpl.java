@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -53,7 +54,7 @@ public class JobPostServiceImpl implements IJobPostService {
 	@Autowired
 	ISearchHistoryService searchHistoryService;
 
-	String filePath = "D:\\\\Job_portal-main\\\\search_history.csv";
+	String filePath = "D:\\\\JobRadar_Project\\\\search_history.csv";
 
 	@Override
 	public boolean createJob(JobPostDTO jobPostDTO, UUID companyId) {
@@ -377,6 +378,13 @@ public class JobPostServiceImpl implements IJobPostService {
 				writer.writeNext(data);
 			}
 		}
+	}
+
+	@Override
+	public List<JobPost> getTop8LatestJobPosts() {
+		return jobPostRepository.findTop8LatestJobPosts().stream()
+		        .limit(8)
+		        .collect(Collectors.toList());
 	}
 
 }
