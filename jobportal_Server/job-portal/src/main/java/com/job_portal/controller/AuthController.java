@@ -243,7 +243,7 @@ public class AuthController {
 		
 		ForgotPassword fp = ForgotPassword.builder()
 				.otp(otp)
-				.expirationTime(new Date(System.currentTimeMillis() + 70 * 1000))
+				.expirationTime(new Date(System.currentTimeMillis() + 5 * 60 * 1000))
 				.userAccount(userAccount.get())
 				.build();
 		forgotPasswordRepository.save(fp);
@@ -274,6 +274,7 @@ public class AuthController {
 		String encodedPassword = passwordEncoder.encode(changePassword.password());
 		
 		userAccountRepository.updatePassword(email, encodedPassword);
+		forgotPasswordRepository.deleteByUserAccountEmail(email);
 		return ResponseEntity.ok("Password đã thay đổi thành công");
 	}
 
