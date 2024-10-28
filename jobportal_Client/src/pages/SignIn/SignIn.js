@@ -22,7 +22,7 @@ export default function SignInForm() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   
-  const handleSubmit =  (value) => {
+  const handleSubmit =  async(e) => {
     e.preventDefault();
     setError('');
     try {
