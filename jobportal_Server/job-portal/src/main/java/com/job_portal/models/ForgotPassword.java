@@ -36,6 +36,6 @@ public class ForgotPassword {
 	private Date expirationTime;
 
 	@OneToOne
-	@JoinColumn(name = "user_id", unique = true, nullable = false)
+	@JoinColumn(name = "user_id")
 	private UserAccount userAccount;
 }
