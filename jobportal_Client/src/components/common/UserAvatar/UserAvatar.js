@@ -27,6 +27,7 @@ const UserAvatar = () => {
         className="w-8 h-8 rounded-full mr-2"
       />
       <span className="text-white">{auth.user?.userName}</span> {/* Thêm dấu hỏi để tránh lỗi */}
+
     </div>
   );
 };

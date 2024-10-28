@@ -32,21 +32,6 @@ export const signupAction = (userData) => async (dispatch) => {
 
 
 
-// export const loginAction = (loginData) => async (dispatch) => {
-//   dispatch({ type: LOGIN_REQUEST });
-//   try {
-//     const response = await axios.post("http://localhost:8080/auth/login", loginData);
-//     dispatch({ type: LOGIN_SUCCESS, payload: response.data });
-//     localStorage.setItem('user', JSON.stringify(response.data));
-//     localStorage.setItem('token', response.data.token);
-//     return { success: true, data: response.data };
-//   } catch (error) {
-//     const errorMessage = error.response?.data?.message || error.message || "An unknown error occurred.";
-//     dispatch({ type: LOGIN_FAILURE, payload: errorMessage });
-//     return { success: false, error: errorMessage };
-//   }
-// };
-
 export const loginAction = (loginData) => async (dispatch) => {
   dispatch({ type: LOGIN_REQUEST });
   try {
@@ -66,6 +51,7 @@ export const loginAction = (loginData) => async (dispatch) => {
       return { success: false, error: errorMessage };
   }
 };
+
 
 export const getProfileAction = (jwt) => async (dispatch) => {
   dispatch({type: GET_PROFILE_REQUEST});
