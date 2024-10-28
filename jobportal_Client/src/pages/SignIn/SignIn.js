@@ -22,29 +22,31 @@ export default function SignInForm() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   
-  const handleSubmit =  (value) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    setError('');
+    setError(''); // Xóa lỗi cũ
     try {
-      const response = await dispatch(loginAction({ email, password }));
-      if (response.success) {
-        setLoginStatus('success');
-        setIsModalOpen(true);
-        setTimeout(() => {
-          setIsModalOpen(false);
-          navigate('/dashboard');
-        }, 2000);
-      } else {
+        const response = await dispatch(loginAction({ email, password }));
+        if (response.success) {
+            setLoginStatus('success');
+            setIsModalOpen(true);
+            setTimeout(() => {
+                setIsModalOpen(false);
+                navigate('/'); // Điều hướng đến trang Home
+            }, 2000);
+        } else {
+            setLoginStatus('failure');
+            setIsModalOpen(true);
+            // Hiển thị thông báo lỗi từ API
+            setError(response.error || 'Đăng nhập thất bại. Vui lòng thử lại.');
+        }
+    } catch (error) {
         setLoginStatus('failure');
         setIsModalOpen(true);
-        setError(response.error || 'Đăng nhập thất bại. Vui lòng thử lại.');
-      }
-    } catch (error) {
-      setLoginStatus('failure');
-      setIsModalOpen(true);
-      setError('Đã xảy ra lỗi. Vui lòng thử lại sau.');
+        setError('Đã xảy ra lỗi. Vui lòng thử lại sau.');
     }
-  };
+};
+
 
   const handleCloseModal = () => {
     setIsModalOpen(false);

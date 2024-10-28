@@ -79,7 +79,7 @@ public class ImageCompanyController {
 		}
 	}
 
-	@GetMapping("/company")
+	@GetMapping("/searchImage")
 	public ResponseEntity<Object> searchImage(@RequestHeader("Authorization") String jwt) {
 		String email = JwtProvider.getEmailFromJwtToken(jwt);
 		Optional<UserAccount> user = userAccountRepository.findByEmail(email);

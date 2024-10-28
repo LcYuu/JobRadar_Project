@@ -10,8 +10,9 @@ import {
   GET_PROFILE_SUCCESS,
   GET_PROFILE_FAILURE
 } from "./auth.actionType";
-
 import { API_BASE_URL } from "../../configs/api";
+
+
 export const signupAction = (userData) => async (dispatch) => {
   dispatch({ type: SIGNUP_REQUEST });
   try {
@@ -49,22 +50,27 @@ export const signupAction = (userData) => async (dispatch) => {
 export const loginAction = (loginData) => async (dispatch) => {
   dispatch({ type: LOGIN_REQUEST });
   try {
-      const { data } = await axios.post(`${API_BASE_URL}/auth/login`, loginData.data);
+      const { data } = await axios.post(`${API_BASE_URL}/auth/login`, loginData);
 
       if (data.token) {
           localStorage.setItem("jwt", data.token);
-      } 
+      }
 
-      dispatch({ type: LOGIN_SUCCESS, payload: data.jwt });
+      dispatch({ type: LOGIN_SUCCESS, payload: data.token });
+      return { success: true, data: data.token };
   } catch (error) {
-      console.error("Login Error: ", error);
-      dispatch({ type: LOGIN_FAILURE, payload: error });
+      // Lấy thông báo lỗi từ phản hồi nếu có, nếu không thì dùng thông báo mặc định
+      const errorMessage = error.response?.data?.message || error.message || "Đã xảy ra lỗi không xác định.";
+      console.error("Login Error: ", errorMessage);
+      dispatch({ type: LOGIN_FAILURE, payload: errorMessage });
+      return { success: false, error: errorMessage };
   }
 };
+
 export const getProfileAction = (jwt) => async (dispatch) => {
   dispatch({type: GET_PROFILE_REQUEST});
   try {
-      const { data } = await axios.get(`${API_BASE_URL}/api/users/profile`, {
+      const { data } = await axios.get(`${API_BASE_URL}/users/profile`, {
           headers: {
               Authorization: `Bearer ${jwt}`,
           },

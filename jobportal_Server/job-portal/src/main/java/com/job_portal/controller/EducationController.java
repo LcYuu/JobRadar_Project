@@ -2,7 +2,6 @@ package com.job_portal.controller;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -52,9 +51,9 @@ public class EducationController {
 
 		boolean isCreated = educationService.createEdu(educationDTO, user.get().getUserId());
 		if (isCreated) {
-			return new ResponseEntity<>("Tạo thành tích thành công", HttpStatus.CREATED);
+			return new ResponseEntity<>("Education created successfully.", HttpStatus.CREATED);
 		} else {
-			return new ResponseEntity<>("Tạo thành tích thất bại", HttpStatus.INTERNAL_SERVER_ERROR);
+			return new ResponseEntity<>("Failed to create Education.", HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
 
@@ -93,16 +92,16 @@ public class EducationController {
 		try {
 			boolean isDeleted = educationService.deleteEdu(educationId);
 			if (isDeleted) {
-				return new ResponseEntity<>("Xóa thành tích thành công", HttpStatus.OK);
+				return new ResponseEntity<>("Education deleted successfully", HttpStatus.OK);
 			} else {
-				return new ResponseEntity<>("Xóa thành tích thất bại", HttpStatus.INTERNAL_SERVER_ERROR);
+				return new ResponseEntity<>("Education deletion failed", HttpStatus.INTERNAL_SERVER_ERROR);
 			}
 		} catch (Exception e) {
 			return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
 		}
 	}
 
-	@GetMapping("/user")
+	@GetMapping("/user/{userId}")
 	public ResponseEntity<Object> searchEduByUserId(@RequestHeader("Authorization") String jwt) {
 		String email = JwtProvider.getEmailFromJwtToken(jwt);
 		Optional<UserAccount> user = userAccountRepository.findByEmail(email);
