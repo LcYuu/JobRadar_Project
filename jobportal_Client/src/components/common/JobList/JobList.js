@@ -11,11 +11,11 @@ export default function JobList() {
   const [size] = useState(12);
 
   useEffect(() => {
+    // Set loading state when fetching new data
     dispatch(getAllJobAction(currentPage, size));
   }, [dispatch, currentPage, size]);
 
   const handlePageChange = (newPage) => {
-    // Kiểm tra để không cho phép chuyển đến trang âm hoặc vượt quá tổng số trang
     if (newPage >= 0 && newPage < totalPages) {
       setCurrentPage(newPage);
     }
@@ -31,7 +31,6 @@ export default function JobList() {
         <a href="#" className="text-primary">Xem tất cả</a>
       </div>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-
         {jobPost.length > 0 ? (
           jobPost.map((job) => (
             <JobCard
@@ -48,19 +47,21 @@ export default function JobList() {
           <p>Không có công việc nào để hiển thị.</p>
         )}
       </div>
-      <div className="flex justify-center mt-6">
+      <div className="flex items-center justify-center mt-6">
         <button
           onClick={() => handlePageChange(currentPage - 1)}
           disabled={currentPage === 0}
-          className="px-4 py-2 mx-2 bg-gray-300 rounded"
+          className={`px-4 py-2 mx-2 text-white rounded-lg transition duration-300 
+            ${currentPage === 0 ? "bg-gray-400 cursor-not-allowed" : "bg-blue-500 hover:bg-blue-600"}`}
         >
           Trước
         </button>
-        <span>{`Trang ${currentPage + 1} / ${totalPages}`}</span>
+        <span className="text-sm font-semibold mx-4">{`Trang ${currentPage + 1} / ${totalPages}`}</span>
         <button
           onClick={() => handlePageChange(currentPage + 1)}
           disabled={currentPage >= totalPages - 1}
-          className="px-4 py-2 mx-2 bg-gray-300 rounded"
+          className={`px-4 py-2 mx-2 text-white rounded-lg transition duration-300 
+            ${currentPage >= totalPages - 1 ? "bg-gray-400 cursor-not-allowed" : "bg-blue-500 hover:bg-blue-600"}`}
         >
           Tiếp theo
         </button>

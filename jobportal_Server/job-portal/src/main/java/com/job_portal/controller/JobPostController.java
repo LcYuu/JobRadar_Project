@@ -72,6 +72,12 @@ public class JobPostController {
 		List<JobPost> jobs = jobPostRepository.findAll();
 		return new ResponseEntity<>(jobs, HttpStatus.OK);
 	}
+	
+	@GetMapping("/get-top8-lastest-job")
+	public ResponseEntity<List<JobPost>> getTop8LatestJobPosts() {
+		List<JobPost> jobs = jobPostService.getTop8LatestJobPosts();
+		return new ResponseEntity<>(jobs, HttpStatus.OK);
+	}
 
 	@GetMapping("/get-job-approve")
 	public ResponseEntity<Page<JobPost>> getJobApprove(Pageable pageable) {

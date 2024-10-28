@@ -27,7 +27,7 @@ const CategoryList = () => {
     <>
     <h2 className="text-2xl font-bold">Danh mục </h2>
     <div className="category-list">
-      {industries.map((industry, index) => (
+      {industries.slice(1).map((industry, index) => (
         <CategoryCard
           key={index}
           icon={iconUrls[index]} 
