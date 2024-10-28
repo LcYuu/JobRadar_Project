@@ -15,11 +15,11 @@ const UserAvatar = () => {
   return (
     <div onClick={handleAvatarClick} className="flex items-center cursor-pointer">
       <img 
-        src={user.avatar} 
+        src={logo}
         alt="User Avatar" 
         className="w-8 h-8 rounded-full mr-2"
       />
-      <span className="text-white">{user.userName}</span>
+      <span className="text-white">UserName</span>
     </div>
   );
 };

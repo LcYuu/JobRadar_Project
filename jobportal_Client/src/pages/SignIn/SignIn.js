@@ -12,6 +12,7 @@ import { FaGoogle } from 'react-icons/fa';
 import googleIcon from '../../assets/icons/google.png';
 import logo1 from '../../assets/images/common/logo1.jpg';
 import { loginAction } from '../../redux/Auth/auth.action';
+import { isStrongPassword } from '../../utils/passwordValidator';
 
 export default function SignInForm() {
   const [email, setEmail] = useState('');
@@ -21,10 +22,16 @@ export default function SignInForm() {
   const [loginStatus, setLoginStatus] = useState(null); // null, 'success', 'failure'
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  
-  const handleSubmit =  async(e) => {
+  const handleSubmit = async (e) => {
+
     e.preventDefault();
     setError('');
+    if (!isStrongPassword(password)) {
+      setLoginStatus('failure');
+      setIsModalOpen(true);
+      setError('Mật khẩu phải có ít nhất 8 ký tự, bao gồm chữ hoa, chữ thường, số và ký tự đặc biệt.');
+      return;
+    }
     try {
       const response = await dispatch(loginAction({ email, password }));
       if (response.success) {
@@ -92,7 +99,7 @@ export default function SignInForm() {
           </CardTitle>
         </CardHeader>
         <CardContent className="p-6">
-          <form className="space-y-4" onSubmit={handleSubmit}>
+          <form className="space-y-4">
             <Button variant="outline" className="w-full flex items-center justify-center gap-2 border border-gray-300 hover:bg-gray-50">
               <img src={googleIcon} className="w-5 h-5" alt="Google Icon" />
               <span>Sign In with Google</span>
@@ -128,7 +135,7 @@ export default function SignInForm() {
                 Quên mật khẩu?
               </a>
             </div>
-            <Button type="submit" className="w-full bg-indigo-600 hover:bg-indigo-700 text-white">
+            <Button onClick={handleSubmit} className="w-full bg-indigo-600 hover:bg-indigo-700 text-white">
               Đăng nhập
             </Button>
           </form>
