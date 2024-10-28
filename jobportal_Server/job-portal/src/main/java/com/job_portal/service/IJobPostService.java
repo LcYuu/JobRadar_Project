@@ -28,4 +28,5 @@ public interface IJobPostService {
 	public List<DailyJobCount> getDailyJobPostCounts(LocalDateTime startDate, LocalDateTime endDate);
 	public Page<JobPost>findByIsApprove(Pageable pageable);
 	public void exportJobPostToCSV(String filePath) throws IOException;
+	public List<JobPost> getTop8LatestJobPosts();
 }

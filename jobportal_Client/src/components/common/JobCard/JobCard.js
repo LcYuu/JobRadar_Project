@@ -2,31 +2,31 @@ import React from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "../../../ui/card";
 import { Badge } from "../../../ui/badge";
 import { useNavigate } from "react-router-dom";
-import "./JobCard.css";
+import "./JobCard.css"; // Đảm bảo tệp CSS được import
+
 const categoryStyles = {
   "Thiết kế": {
-    backgroundColor: "rgba(0, 128, 0, 0.1)", // màu xanh nhạt
+    backgroundColor: "rgba(0, 128, 0, 0.1)",
     color: "green",
   },
   "Kinh doanh": {
-    backgroundColor: "rgba(128, 0, 128, 0.1)", // màu tím nhạt
+    backgroundColor: "rgba(128, 0, 128, 0.1)",
     color: "purple",
   },
-  // Bạn có thể thêm các category và màu khác tại đây
   Marketing: {
-    backgroundColor: "rgba(255, 165, 0, 0.1)", // màu cam nhạt
+    backgroundColor: "rgba(255, 165, 0, 0.1)",
     color: "orange",
   },
   "Công nghệ": {
-    backgroundColor: "rgba(0, 0, 255, 0.1)", // màu xanh dương nhạt
+    backgroundColor: "rgba(0, 0, 255, 0.1)",
     color: "blue",
   },
   "IT phần cứng": {
-    backgroundColor: "rgba(0, 0, 255, 0.1)", // màu xanh dương nhạt
+    backgroundColor: "rgba(0, 0, 255, 0.1)",
     color: "blue",
   },
-
 };
+
 function JobCardContent({ company, location, category }) {
   return (
     <>
@@ -34,9 +34,7 @@ function JobCardContent({ company, location, category }) {
         <span className="text-muted-foreground text-sm font-semibold inline-block max-w-[150px] truncate">
           {company}
         </span>
-        <span className="text-muted-foreground text-sm">
-          {location}
-        </span>
+        <span className="text-muted-foreground text-sm">{location}</span>
       </div>
       <div className="flex space-x-2">
         <Badge
@@ -45,7 +43,7 @@ function JobCardContent({ company, location, category }) {
               backgroundColor: "rgba(0, 0, 0, 0.1)",
               color: "black",
             }
-          } // màu mặc định
+          }
           variant="secondary"
         >
           {category}
@@ -66,15 +64,16 @@ export default function JobCard({
   const navigate = useNavigate();
 
   const handleCardClick = () => {
-    navigate("/"); // Điều hướng đến trang công việc chi tiết dựa trên jobId
+    navigate("/"); // Điều hướng đến trang công việc chi tiết
   };
+
   return (
-    <Card onClick={handleCardClick} className="cursor-pointer">
-      <CardHeader>
+    <Card onClick={handleCardClick} className="card cursor-pointer"> {/* Thêm class card */}
+      <CardHeader className="card-header"> {/* Thêm class card-header */}
         <JobCardHeader jobType={jobType} companyLogo={companyLogo} />
         <CardTitle>{jobTitle}</CardTitle>
       </CardHeader>
-      <CardContent>
+      <CardContent className="card-content"> {/* Thêm class card-content */}
         <JobCardContent
           company={company}
           location={location}
@@ -92,8 +91,7 @@ function JobCardHeader({ jobType, companyLogo }) {
         src={companyLogo}
         alt="Company Logo"
         className="w-12 h-12 rounded-lg"
-      />{" "}
-      {/* Hiển thị logo công ty */}
+      />
       <div className="bg-indigo-600 text-white border border-blue-500 px-2 py-1 rounded-md text-xs font-semibold uppercase">
         {jobType}
       </div>

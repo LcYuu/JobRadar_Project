@@ -40,7 +40,8 @@ public interface JobPostRepository extends JpaRepository<JobPost, UUID> {
      
      List<JobPost> findByIsApproveTrueAndExpireDateGreaterThanEqual(LocalDateTime currentDate);
      Page<JobPost>findByIsApproveTrueAndExpireDateGreaterThanEqual(Pageable pageable, LocalDateTime currentTime);
-
+     @Query("SELECT j FROM JobPost j WHERE j.isApprove = true ORDER BY j.createDate DESC")
+     List<JobPost> findTop8LatestJobPosts();
  }
     
 
