@@ -10,7 +10,6 @@ const Home = () => {
   return (
     <>
       <Slider />
-      <SearchEngine />
       <CategoryList />
       <TopListEmployers/>
       <JobList />
